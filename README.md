@@ -15,6 +15,19 @@
 
 
 
-##  Descripción del Proyecto
+# Simulador de Asignación de Memoria
+## Comparación de Algoritmos Best Fit y Worst Fit
 
-Este repositorio contiene mi solución a la práctica de **Fundamentos de Programación**, donde implemento funciones en JavaScript para resolver problemas de álgebra básica, preparándome para trabajar con operaciones matriciales más complejas.
+---
+
+## a) Introducción
+
+Este proyecto consiste en un simulador interactivo desarrollado en HTML, CSS y JavaScript que permite visualizar el funcionamiento de los algoritmos de asignación de memoria **Best Fit** y **Worst Fit**.
+
+El objetivo principal es comprender cómo cada algoritmo selecciona bloques de memoria para asignar procesos, así como analizar su impacto en la fragmentación y el aprovechamiento de memoria.
+
+El simulador permite observar en tiempo real cómo se divide la memoria, cómo se generan fragmentos libres y cómo cada algoritmo toma decisiones distintas ante los mismos procesos.
+
+---
+
+## b)
