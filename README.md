@@ -50,3 +50,31 @@ El simulador permite observar en tiempo real cómo se divide la memoria, cómo s
 - Cómo se genera fragmentación externa.
 - Diferencias en el porcentaje de memoria utilizada.
 - Comparación directa en la tabla de métricas.
+
+---
+
+### ¿Qué significan los resultados?
+
+- **Fragmentación:** Espacio libre que queda sin utilizar después de varias asignaciones.
+- **Memoria Utilizada (%):** Porcentaje del total de memoria que fue asignada a procesos.
+- **Procesos Asignados:** Cantidad total de procesos que lograron entrar en memoria.
+- **Mejor algoritmo:** El que presenta menor fragmentación o mayor eficiencia de uso.
+
+---
+
+## c) Explicación de los algoritmos
+
+### 🔵 Best Fit (Mejor Ajuste)
+
+Este algoritmo busca el bloque libre más pequeño que sea suficiente para almacenar el proceso.
+
+- Reduce el desperdicio inmediato.
+- Puede generar muchos fragmentos pequeños.
+- Tiende a producir fragmentación externa con el tiempo.
+
+Funcionamiento:
+1. Recorre todos los bloques libres.
+2. Selecciona el que tenga la menor diferencia entre tamaño del bloque y tamaño del proceso.
+3. Divide el bloque si sobra espacio.
+
+---
