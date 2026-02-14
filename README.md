@@ -1,17 +1,17 @@
 # Simulador-HTML-Interactivo
 
 
-# Fundamentos de Algebra - Practica 1
+# SISTEMAS OPERATIVOS - 
 
 ## Información del Estudiante
 - **Nombre:** Euruviel Márquez Martínez  
 - **Matrícula:**  SW2509018
-- **Grupo:** 1C 
+- **Grupo:** 2C 
 - **Carrera:** TSW  
-- **Cuatrimestre:** Primero  
+- **Cuatrimestre:** segundo
 - **Profesor:** Jorge Javier Pedrozo Romero  
 
-# Actividad-21.-Cifrado-Hill
+# Actividad-Puntos Extras
 
 
 
