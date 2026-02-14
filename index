@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Simulador Best Fit vs Worst Fit</title>
+    <style>
+        /* RESET BÁSICO */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY GENERAL */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #0f1117; /* Negro azulado */
+    color: #e4e6eb;
+    padding: 20px;
+}
+
+/* ENCABEZADO */
+header {
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 30px;
+    background: linear-gradient(90deg, #1f2937, #111827);
+    border-radius: 10px;
+    border: 1px solid #1d4ed8;
+}
+
+header h1 {
+    color: #3b82f6;
+    margin-bottom: 10px;
+}
+
+header p {
+    color: #9ca3af;
+}
+
+/* SECCIONES */
+section {
+    background-color: #1a1c23;
+    padding: 20px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    border: 1px solid #2a2d38;
+}
+
+/* TÍTULOS */
+h2 {
+    color: #60a5fa;
+    margin-bottom: 15px;
+}
+
+h3 {
+    color: #a78bfa;
+    margin-bottom: 10px;
+}
+
+/* INPUTS */
+input {
+    padding: 8px;
+    margin: 5px 0 10px 0;
+    width: 100%;
+    background-color: #0f1117;
+    border: 1px solid #374151;
+    border-radius: 5px;
+    color: #ffffff;
+}
+
+input:focus {
+    outline: none;
+    border-color: #3b82f6;
+}
+
+/* BOTONES */
+button {
+    padding: 8px 15px;
+    margin: 5px 5px 10px 0;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #1d4ed8;
+    transform: scale(1.05);
+}
+
+/* BOTÓN PELIGRO */
+#btnReiniciar {
+    background-color: #7c3aed;
+}
+
+#btnReiniciar:hover {
+    background-color: #6d28d9;
+}
+
+/* CONTENEDORES DE SIMULACIÓN */
+#simulacion {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+#bestFit, #worstFit {
+    flex: 1;
+    min-width: 300px;
+}
+
+/* MEMORIA VISUAL */
+#bestFitMemory,
+#worstFitMemory {
+    min-height: 200px;
+    padding: 10px;
+    background-color: #0f1117;
+    border: 1px solid #374151;
+    border-radius: 5px;
+}
+
+/* BLOQUES DE MEMORIA (los usaremos luego con JS) */
+.bloque {
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* BLOQUE LIBRE */
+.libre {
+    background-color: #1f2937;
+    border-left: 5px solid #10b981;
+}
+
+/* BLOQUE OCUPADO */
+.ocupado {
+    background-color: #1e3a8a;
+    border-left: 5px solid #3b82f6;
+}
+
+/* COLA DE PROCESOS */
+#listaProcesos div {
+    padding: 8px;
+    margin-bottom: 5px;
+    background-color: #111827;
+    border-left: 4px solid #a78bfa;
+    border-radius: 5px;
+}
+
+/* TABLA */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th {
+    background-color: #1e3a8a;
+    color: white;
+    padding: 10px;
+}
+
+td {
+    padding: 10px;
+    border: 1px solid #374151;
+    text-align: center;
+}
+
+/* EFECTO RESPONSIVE */
+@media (max-width: 768px) {
+    #simulacion {
+        flex-direction: column;
+    }
+}
+
+
+    </style>
+</head>
+<body>
+
+    <!-- ENCABEZADO -->
+    <header>
+        <h1>Simulador de Asignación de Memoria</h1>
+        <p>Comparación de algoritmos Best Fit y Worst Fit</p>
+    </header>
+
+    <!-- PANEL DE CONFIGURACIÓN -->
+    <section id="configuracion">
+
+        <h2>Configuración de Memoria</h2>
+
+        <label for="totalMemory">Memoria Total (KB):</label>
+        <input type="number" id="totalMemory">
+
+        <label for="numPartitions">Número de Particiones:</label>
+        <input type="number" id="numPartitions">
+
+        <button id="btnInicializar">Inicializar Memoria</button>
+
+    </section>
+
+    <!-- SECCIÓN PARA AGREGAR PROCESOS -->
+    <section id="procesos">
+
+        <h2>Agregar Proceso</h2>
+
+        <label for="processName">Nombre:</label>
+        <input type="text" id="processName">
+
+        <label for="processSize">Tamaño (KB):</label>
+        <input type="number" id="processSize">
+
+        <button id="btnAgregar">Agregar a Cola</button>
+        <button id="btnPaso">Ejecutar Paso</button>
+        <button id="btnTodos">Ejecutar Todos</button>
+        <button id="btnReiniciar">Reiniciar</button>
+
+    </section>
+
+    <!-- COLA DE PROCESOS -->
+    <section id="colaProcesos">
+
+        <h2>Cola de Procesos</h2>
+
+        <div id="listaProcesos">
+            <!-- Aquí se mostrarán los procesos pendientes -->
+        </div>
+
+    </section>
+
+    <!-- ÁREA DE SIMULACIÓN -->
+    <section id="simulacion">
+
+        <h2>Simulación</h2>
+
+        <!-- Best Fit -->
+        <div id="bestFit">
+            <h3>Best Fit</h3>
+            <div id="bestFitMemory">
+                <!-- Aquí se dibujarán los bloques de memoria -->
+            </div>
+        </div>
+
+        <!-- Worst Fit -->
+        <div id="worstFit">
+            <h3>Worst Fit</h3>
+            <div id="worstFitMemory">
+                <!-- Aquí se dibujarán los bloques de memoria -->
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ESTADÍSTICAS -->
+    <section id="estadisticas">
+
+        <h2>Estadísticas</h2>
+
+        <div>
+            <h3>Best Fit</h3>
+            <p>Fragmentación: <span id="bfFragmentacion">0</span></p>
+            <p>Memoria Utilizada: <span id="bfUso">0%</span></p>
+            <p>Procesos Asignados: <span id="bfProcesos">0</span></p>
+        </div>
+
+        <div>
+            <h3>Worst Fit</h3>
+            <p>Fragmentación: <span id="wfFragmentacion">0</span></p>
+            <p>Memoria Utilizada: <span id="wfUso">0%</span></p>
+            <p>Procesos Asignados: <span id="wfProcesos">0</span></p>
+        </div>
+
+    </section>
+
+    <!-- TABLA DE COMPARACIÓN -->
+    <section id="comparacion">
+
+        <h2>Comparación</h2>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Métrica</th>
+                    <th>Best Fit</th>
+                    <th>Worst Fit</th>
+                    <th>Mejor</th>
+                </tr>
+            </thead>
+            <tbody id="tablaComparacion">
+                <!-- Se llenará dinámicamente -->
+            </tbody>
+        </table>
+
+    </section>
+    <script>
+        // ================= VARIABLES =================
+let bestFitBlocks = [];
+let worstFitBlocks = [];
+let processQueue = [];
+let totalMemory = 0;
+
+// ================= INICIALIZAR MEMORIA =================
+document.getElementById("btnInicializar").addEventListener("click", function () {
+
+    totalMemory = parseInt(document.getElementById("totalMemory").value);
+    let partitions = parseInt(document.getElementById("numPartitions").value);
+
+    bestFitBlocks = [];
+    worstFitBlocks = [];
+
+    let sizePerPartition = Math.floor(totalMemory / partitions);
+
+    for (let i = 0; i < partitions; i++) {
+        let block = {
+            size: sizePerPartition,
+            free: true,
+            process: null
+        };
+
+        bestFitBlocks.push({ ...block });
+        worstFitBlocks.push({ ...block });
+    }
+
+    renderMemory();
+    updateStats();
+});
+
+// ================= AGREGAR PROCESO =================
+document.getElementById("btnAgregar").addEventListener("click", function () {
+
+    let name = document.getElementById("processName").value;
+    let size = parseInt(document.getElementById("processSize").value);
+
+    if (!name || size <= 0) return;
+
+    processQueue.push({ name, size });
+    renderQueue();
+});
+
+// ================= EJECUTAR PASO =================
+document.getElementById("btnPaso").addEventListener("click", function () {
+
+    if (processQueue.length === 0) return;
+
+    let process = processQueue.shift();
+
+    bestFit(process.name, process.size);
+    worstFit(process.name, process.size);
+
+    renderMemory();
+    renderQueue();
+    updateStats();
+});
+
+// ================= EJECUTAR TODOS =================
+document.getElementById("btnTodos").addEventListener("click", function () {
+
+    while (processQueue.length > 0) {
+        let process = processQueue.shift();
+        bestFit(process.name, process.size);
+        worstFit(process.name, process.size);
+    }
+
+    renderMemory();
+    renderQueue();
+    updateStats();
+});
+
+// ================= REINICIAR =================
+document.getElementById("btnReiniciar").addEventListener("click", function () {
+    bestFitBlocks = [];
+    worstFitBlocks = [];
+    processQueue = [];
+    renderMemory();
+    renderQueue();
+    updateStats();
+});
+
+// ================= BEST FIT =================
+function bestFit(name, size) {
+
+    let bestIndex = -1;
+    let minDiff = Infinity;
+
+    for (let i = 0; i < bestFitBlocks.length; i++) {
+        let block = bestFitBlocks[i];
+
+        if (block.free && block.size >= size) {
+            let diff = block.size - size;
+
+            if (diff < minDiff) {
+                minDiff = diff;
+                bestIndex = i;
+            }
+        }
+    }
+
+    if (bestIndex !== -1) {
+        let block = bestFitBlocks[bestIndex];
+
+        // DIVIDIR BLOQUE (fragmentación real)
+        bestFitBlocks.splice(bestIndex, 1,
+            { size: size, free: false, process: name },
+            { size: block.size - size, free: true, process: null }
+        );
+    }
+}
+
+// ================= WORST FIT =================
+function worstFit(name, size) {
+
+    let worstIndex = -1;
+    let maxDiff = -1;
+
+    for (let i = 0; i < worstFitBlocks.length; i++) {
+        let block = worstFitBlocks[i];
+
+        if (block.free && block.size >= size) {
+            let diff = block.size - size;
+
+            if (diff > maxDiff) {
+                maxDiff = diff;
+                worstIndex = i;
+            }
+        }
+    }
+
+    if (worstIndex !== -1) {
+        let block = worstFitBlocks[worstIndex];
+
+        worstFitBlocks.splice(worstIndex, 1,
+            { size: size, free: false, process: name },
+            { size: block.size - size, free: true, process: null }
+        );
+    }
+}
+
+// ================= RENDER MEMORIA =================
+function renderMemory() {
+
+    let bfContainer = document.getElementById("bestFitMemory");
+    let wfContainer = document.getElementById("worstFitMemory");
+
+    bfContainer.innerHTML = "";
+    wfContainer.innerHTML = "";
+
+    bestFitBlocks.forEach(block => {
+        let div = document.createElement("div");
+        div.className = "bloque " + (block.free ? "libre" : "ocupado");
+        div.innerText = block.free ? 
+            "Libre - " + block.size + " KB" :
+            block.process + " - " + block.size + " KB";
+        bfContainer.appendChild(div);
+    });
+
+    worstFitBlocks.forEach(block => {
+        let div = document.createElement("div");
+        div.className = "bloque " + (block.free ? "libre" : "ocupado");
+        div.innerText = block.free ?
+            "Libre - " + block.size + " KB" :
+            block.process + " - " + block.size + " KB";
+        wfContainer.appendChild(div);
+    });
+}
+
+// ================= RENDER COLA =================
+function renderQueue() {
+
+    let container = document.getElementById("listaProcesos");
+    container.innerHTML = "";
+
+    processQueue.forEach(p => {
+        let div = document.createElement("div");
+        div.innerText = p.name + " - " + p.size + " KB";
+        container.appendChild(div);
+    });
+}
+
+// ================= ESTADÍSTICAS =================
+function updateStats() {
+
+    let bfFrag = calculateFragmentation(bestFitBlocks);
+    let wfFrag = calculateFragmentation(worstFitBlocks);
+
+    let bfUsed = calculateUsed(bestFitBlocks);
+    let wfUsed = calculateUsed(worstFitBlocks);
+
+    document.getElementById("bfFragmentacion").innerText = bfFrag + " KB";
+    document.getElementById("wfFragmentacion").innerText = wfFrag + " KB";
+
+    document.getElementById("bfUso").innerText = bfUsed.toFixed(1) + "%";
+    document.getElementById("wfUso").innerText = wfUsed.toFixed(1) + "%";
+
+    document.getElementById("bfProcesos").innerText = countProcesses(bestFitBlocks);
+    document.getElementById("wfProcesos").innerText = countProcesses(worstFitBlocks);
+
+    updateComparison();
+}
+
+// ================= FUNCIONES AUXILIARES =================
+function calculateFragmentation(blocks) {
+    return blocks
+        .filter(b => b.free)
+        .reduce((sum, b) => sum + b.size, 0);
+}
+
+function calculateUsed(blocks) {
+    let used = blocks
+        .filter(b => !b.free)
+        .reduce((sum, b) => sum + b.size, 0);
+
+    return (used / totalMemory) * 100;
+}
+
+function countProcesses(blocks) {
+    return blocks.filter(b => !b.free).length;
+}
+
+// ================= TABLA COMPARACIÓN =================
+function updateComparison() {
+
+    let table = document.getElementById("tablaComparacion");
+
+    let bfFrag = calculateFragmentation(bestFitBlocks);
+    let wfFrag = calculateFragmentation(worstFitBlocks);
+
+    table.innerHTML = `
+        <tr>
+            <td>Fragmentación</td>
+            <td>${bfFrag}</td>
+            <td>${wfFrag}</td>
+            <td>${bfFrag < wfFrag ? "Best Fit" : "Worst Fit"}</td>
+        </tr>
+    `;
+}
+
+    </script>
+
+</body>
+</html>
