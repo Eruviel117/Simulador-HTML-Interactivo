@@ -30,4 +30,23 @@ El simulador permite observar en tiempo real cómo se divide la memoria, cómo s
 
 ---
 
-## b)
+## b) Instrucciones
+
+### ¿Qué debe hacer el usuario?
+
+1. Ingresar el tamaño total de memoria.
+2. Indicar el número de particiones iniciales.
+3. Presionar **"Inicializar Memoria"**.
+4. Agregar procesos indicando nombre y tamaño.
+5. Ejecutar los procesos paso a paso o ejecutar todos automáticamente.
+6. Observar los resultados en ambas columnas (Best Fit y Worst Fit).
+
+---
+
+### ¿Qué va a observar?
+
+- Cómo cada algoritmo selecciona un bloque diferente.
+- Cómo se dividen los bloques cuando el proceso no ocupa todo el espacio.
+- Cómo se genera fragmentación externa.
+- Diferencias en el porcentaje de memoria utilizada.
+- Comparación directa en la tabla de métricas.
