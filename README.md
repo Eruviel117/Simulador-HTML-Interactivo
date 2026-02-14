@@ -108,3 +108,8 @@ Este proyecto permitió comprender de manera práctica cómo funcionan los algor
 La simulación visual facilita entender conceptos teóricos que pueden ser difíciles de visualizar únicamente con explicación escrita.
 
 ---
+
+
+## Clausula de IA
+
+Yo Euruviel Marquez declaro que NO he utilizado herramientas de Inteligencia Artificial para la elaboración de este trabajo académico.
