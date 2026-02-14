@@ -20,7 +20,7 @@
 
 ---
 
-## a) Introducción
+## Introducción
 
 Este proyecto consiste en un simulador interactivo desarrollado en HTML, CSS y JavaScript que permite visualizar el funcionamiento de los algoritmos de asignación de memoria **Best Fit** y **Worst Fit**.
 
@@ -30,7 +30,7 @@ El simulador permite observar en tiempo real cómo se divide la memoria, cómo s
 
 ---
 
-## b) Instrucciones
+## Instrucciones
 
 ### ¿Qué debe hacer el usuario?
 
@@ -62,7 +62,7 @@ El simulador permite observar en tiempo real cómo se divide la memoria, cómo s
 
 ---
 
-## c) Explicación de los algoritmos
+## Explicación de los algoritmos
 
 ### 🔵 Best Fit (Mejor Ajuste)
 
@@ -72,9 +72,39 @@ Este algoritmo busca el bloque libre más pequeño que sea suficiente para almac
 - Puede generar muchos fragmentos pequeños.
 - Tiende a producir fragmentación externa con el tiempo.
 
+---
+
+### 🟣 Worst Fit (Peor Ajuste)
+
+Este algoritmo selecciona el bloque libre más grande disponible.
+
+- Deja fragmentos grandes disponibles.
+- Puede desperdiciar más memoria inicialmente.
+- Reduce la creación de fragmentos pequeños.
+
+Funcionamiento:
+1. Recorre todos los bloques libres.
+2. Selecciona el bloque con mayor espacio sobrante.
+3. Divide el bloque si sobra espacio.
+
+---
+
 Funcionamiento:
 1. Recorre todos los bloques libres.
 2. Selecciona el que tenga la menor diferencia entre tamaño del bloque y tamaño del proceso.
 3. Divide el bloque si sobra espacio.
+
+---
+
+
+## Reflexión
+
+A través de este simulador se puede observar que la elección del algoritmo de asignación influye directamente en el rendimiento del sistema y en la fragmentación de memoria.
+
+Aunque Best Fit parece más eficiente en teoría porque aprovecha mejor el espacio inmediato, puede generar fragmentos muy pequeños que se vuelven inutilizables. Por otro lado, Worst Fit mantiene bloques grandes disponibles, pero puede desperdiciar más memoria en asignaciones individuales.
+
+Este proyecto permitió comprender de manera práctica cómo funcionan los algoritmos de gestión de memoria y cómo las decisiones del sistema operativo impactan el rendimiento general.
+
+La simulación visual facilita entender conceptos teóricos que pueden ser difíciles de visualizar únicamente con explicación escrita.
 
 ---
